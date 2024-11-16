@@ -9,7 +9,8 @@ class PatagoniaSupplier < Supplier
       hotel = normalize_data(hotel_data)
       @hotels << hotel
     end
-    puts @hotels.to_json
+
+    @hotels
   end
 
   private

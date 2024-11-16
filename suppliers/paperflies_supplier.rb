@@ -11,7 +11,8 @@ class PaperfliesSupplier < Supplier
 
       @hotels << hotel
     end
-    puts @hotels.to_json
+
+    @hotels
   end
 
   private
