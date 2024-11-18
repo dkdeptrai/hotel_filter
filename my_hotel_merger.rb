@@ -6,8 +6,10 @@ require_relative 'suppliers/acme_supplier'
 require_relative 'suppliers/patagonia_supplier'
 require_relative 'suppliers/paperflies_supplier'
 
+logger = Logger.new(STDOUT)
+
 if ARGV.length != 2
-  Logger.new(STDOUT).error "Usage: ruby #{__FILE__} <hotel_ids> <destination_ids>"
+  logger.error "Usage: ruby #{__FILE__} <hotel_ids> <destination_ids>"
   exit(1)
 end
 
@@ -20,20 +22,20 @@ SUPPLIER_CLASSES = [AcmeSupplier, PatagoniaSupplier, PaperfliesSupplier]
 begin
   supplier_service = SupplierService.new(SUPPLIER_CLASSES)
 
-  Logger.new(STDOUT).info("Fetching and merging data from suppliers")
+  logger.info("Fetching and merging data from suppliers")
   merged_data = supplier_service.fetch_and_merge
 
-  Logger.new(STDOUT).info("Creating hotel objects")
+  logger.info("Creating hotel objects")
   hotels = merged_data.map { |hotel_data| Hotel.new(hotel_data) }
 
-  Logger.new(STDOUT).info("Finished creating #{hotels.size} hotel objects")
+  logger.info("Finished creating #{hotels.size} hotel objects")
 
-  Logger.new(STDOUT).info("Filtering hotels")
+  logger.info("Filtering hotels")
   filtered_hotels = Hotel.filter(hotels, hotel_ids: hotel_ids, destination_ids: destination_ids)
 
-  puts "Filtered Hotels:\n#{filtered_hotels}"
+  logger.info "Filtered Hotels:\n#{filtered_hotels}"
 
 rescue => e
-  Logger.new(STDOUT).error("An error occurred: #{e.message}")
+  logger.error("An error occurred: #{e.message}\n#{e.backtrace.join("\n")}")
   exit(1)
 end
