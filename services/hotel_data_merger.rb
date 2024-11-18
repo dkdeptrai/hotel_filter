@@ -62,13 +62,12 @@ class HotelDataMerger
       new_images = []
 
       new_data.dig(:images, category).each do |image|
-        if existing_links.include?(image)
-          puts "Duplicate image: #{image}"
-        else
+        unless existing_links.include?(image)
           new_images << image
           existing_links.add(image)
         end
       end
+
       existing[:images][category].concat(new_images) if new_images.any?
     end
 
@@ -83,8 +82,6 @@ class HotelDataMerger
     room_amenities = existing.dig(:amenities, :room) || []
     existing_amenities = Set.new(general_amenities + room_amenities)
 
-    puts existing_amenities
-
     [:general, :room].each do |category|
       next unless new_data.dig(:amenities, category)
 
@@ -93,9 +90,7 @@ class HotelDataMerger
       new_amenities = []
 
       new_data.dig(:amenities, category).each do |amenity|
-        if existing_amenities.include?(amenity)
-          puts "Duplicate amenity: #{amenity}"
-        else
+        unless existing_amenities.include?(amenity)
           new_amenities << amenity
           existing_amenities.add(amenity)
         end
