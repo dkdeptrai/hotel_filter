@@ -3,7 +3,7 @@ require_relative '../suppliers/acme_supplier'
 require_relative '../suppliers/patagonia_supplier'
 require_relative '../suppliers/paperflies_supplier'
 
-require_relative 'hotel_data_merger'
+require_relative 'data_merger_service'
 class SupplierService
   def initialize(supplier_classes)
     @supplier_classes = supplier_classes
@@ -17,7 +17,7 @@ class SupplierService
   end
 
   def merge_data
-    @merged_data = HotelDataMerger.merge(@data)
+    @merged_data = DataMergerService.merge(@data)
   end
 
   def fetch_and_merge

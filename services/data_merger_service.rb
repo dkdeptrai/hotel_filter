@@ -1,4 +1,4 @@
-class HotelDataMerger
+class DataMergerService
   def self.merge(normalized_data_arrays)
     hotels_by_id = {}
 
@@ -40,11 +40,10 @@ class HotelDataMerger
 
   # replace if new data is available because it should be the same between different supplier
   def self.merge_location(existing, new_data)
-    existing[:location][:lat] = new_data.dig(:location, :lat) if new_data.dig(:location, :lat)
-    existing[:location][:lng] = new_data.dig(:location, :lng) if new_data.dig(:location, :lng)
-    existing[:location][:address] = new_data.dig(:location, :address) if new_data.dig(:location, :address)
-    existing[:location][:city] = new_data.dig(:location, :city) if new_data.dig(:location, :city)
-    existing[:location][:country] = new_data.dig(:location, :country) if new_data.dig(:location, :country)
+    [:lat, :lng, :address, :city, :country].each do |key|
+      existing[:location] ||= {}
+      existing[:location][key] = new_data.dig(:location, key) if new_data.dig(:location, key)
+    end
   end
 
   # add new images if not already exist a duplicate link
@@ -70,8 +69,6 @@ class HotelDataMerger
 
       existing[:images][category].concat(new_images) if new_images.any?
     end
-
-    existing
   end
 
   # add new amenities if not already exist a duplicate amenity name
@@ -98,8 +95,5 @@ class HotelDataMerger
 
       existing[:amenities][category].concat(new_amenities) if new_amenities.any?
     end
-
-    existing
   end
-
 end
