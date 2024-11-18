@@ -40,7 +40,7 @@ class AcmeSupplier < Supplier
 
   def normalize_amenities(hotel_data)
     {
-      general: hotel_data['Facilities']&.map(&:strip) || []
+      general: hotel_data['Facilities']&.map { |facility| cleanup_string(facility) }|| []
     }
   end
 
@@ -52,5 +52,16 @@ class AcmeSupplier < Supplier
       country: COUNTRY_CODE[hotel_data['Country']] || nil,
       city: hotel_data['City']&.strip || nil,
     }
+  end
+
+  def cleanup_string(string)
+    string.strip!
+    return 'wifi' if string == "WiFi"
+
+    # why tf does this supplier has typos???? This supplier sucks, not to mention no differentiating between room and general amenities smh
+    return 'bathtub' if string == "BathTub"
+
+    # CamelCase, really????
+    string.gsub(/([a-z])([A-Z])/, '\1 \2').split.map(&:downcase).join(' ')
   end
 end

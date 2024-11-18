@@ -40,7 +40,7 @@ class PatagoniaSupplier < Supplier
 
   def normalize_amenities(hotel_data)
     {
-      general: hotel_data['amenities']&.map(&:strip) || []
+      room: hotel_data['amenities']&.map { |amenity| amenity.strip.downcase } || []
     }
   end
 

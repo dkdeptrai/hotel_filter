@@ -36,13 +36,15 @@ class PaperfliesSupplier < Supplier
     location = normalize_location(hotel_data)
     hotel[:location] = location
 
+    hotel[:booking_conditions] = hotel_data['booking_conditions'] || nil
+
     hotel
   end
 
   def normalize_amenities(hotel_data)
     {
-      general: hotel_data.dig('amenities', 'general').map(&:strip) || [],
-      room: hotel_data.dig('amenities', 'room').map(&:strip) || []
+      general: hotel_data.dig('amenities', 'general')&.map { |amenity| amenity.strip.downcase } || [],
+      room: hotel_data.dig('amenities', 'room')&.map { |amenity| amenity.strip.downcase } || []
     }
   end
 
