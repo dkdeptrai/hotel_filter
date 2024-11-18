@@ -3,13 +3,17 @@ require_relative 'supplier'
 # This supplier doesn't provide country, city, and postal code
 class PatagoniaSupplier < Supplier
   def fetch_data
-    raw_data = fetch_json("https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/patagonia")
+    begin
+      raw_data = fetch_json("https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/patagonia")
 
-    raw_data.each do |hotel_data|
-      hotel = normalize_data(hotel_data)
-      @hotels << hotel
+      raw_data.each do |hotel_data|
+        hotel = normalize_data(hotel_data)
+        @hotels << hotel
+      end
+    rescue => e
+      Logger.new(STDOUT).error "Error fetching data from Patagonia API: #{e.message}"
+      raise
     end
-
     @hotels
   end
 
@@ -22,8 +26,8 @@ class PatagoniaSupplier < Supplier
     Logger.new(STDOUT).info "Processing hotel id #{hotel[:id]}"
 
     hotel[:destination_id] = hotel_data['destination']
-    hotel[:name] = hotel_data['name']&.strip || nil
-    hotel[:description] = hotel_data['info']&.strip || nil
+    hotel[:name] = hotel_data['name']&.strip
+    hotel[:description] = hotel_data['info']&.strip
 
     amenities = normalize_amenities(hotel_data)
 
@@ -48,7 +52,7 @@ class PatagoniaSupplier < Supplier
     {
       lng: hotel_data['lng'] || nil,
       lat: hotel_data['lat'] || nil,
-      address: hotel_data['address']&.strip || nil
+      address: hotel_data['address']&.strip
     }
   end
 
@@ -56,14 +60,14 @@ class PatagoniaSupplier < Supplier
     {
       rooms: (hotel_data.dig('images', 'rooms') || []).map do |image|
         {
-          link: image['url']&.strip || nil,
-          description: image['description']&.strip || nil
+          link: image['url']&.strip,
+          description: image['description']&.strip
         }
       end,
       amenities: (hotel_data.dig('images', 'amenities') || []).map do |image|
         {
-          link: image['url']&.strip || nil,
-          description: image['description']&.strip || nil
+          link: image['url']&.strip,
+          description: image['description']&.strip
         }
       end
     }

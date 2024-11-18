@@ -26,8 +26,8 @@ class AcmeSupplier < Supplier
     hotel[:id] = hotel_data['Id']
     Logger.new(STDOUT).info "Processing hotel id #{hotel[:id]}"
     hotel[:destination_id] = hotel_data['DestinationId']
-    hotel[:name] = hotel_data['Name']&.strip || nil
-    hotel[:description] = hotel_data['Description']&.strip || nil
+    hotel[:name] = hotel_data['Name']&.strip
+    hotel[:description] = hotel_data['Description']&.strip
 
     amenities = normalize_amenities(hotel_data)
     hotel[:amenities] = amenities
@@ -40,7 +40,7 @@ class AcmeSupplier < Supplier
 
   def normalize_amenities(hotel_data)
     {
-      general: hotel_data['Facilities']&.map { |facility| cleanup_string(facility) }|| []
+      general: hotel_data['Facilities']&.map { |facility| cleanup_string(facility) } || []
     }
   end
 
@@ -48,9 +48,9 @@ class AcmeSupplier < Supplier
     {
       lng: hotel_data['Longitude'] || nil,
       lat: hotel_data['Latitude'] || nil,
-      address: hotel_data['Address']&.strip || nil,
+      address: hotel_data['Address']&.strip,
       country: COUNTRY_CODE[hotel_data['Country']] || nil,
-      city: hotel_data['City']&.strip || nil,
+      city: hotel_data['City']&.strip,
     }
   end
 
