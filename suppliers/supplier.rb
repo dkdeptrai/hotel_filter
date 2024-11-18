@@ -18,19 +18,6 @@ class Supplier
 
   end
 
-  def self.create_supplier(supplier_name)
-    case supplier_name
-    when 'acme'
-      AcmeSupplier.new
-    when 'patagonia'
-      PatagoniaSupplier.new
-    when 'paperflies'
-      PaperfliesSupplier.new
-    else
-      raise "Unknown supplier :#{supplier_name}"
-    end
-  end
-
   protected
 
   def fetch_json(url)

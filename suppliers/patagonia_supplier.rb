@@ -19,7 +19,7 @@ class PatagoniaSupplier < Supplier
     hotel = {}
 
     hotel[:id] = hotel_data['id']
-    puts "Processing hotel id: #{hotel[:id]}"
+    Logger.new(STDOUT).info "Processing hotel id #{hotel[:id]}"
 
     hotel[:destination_id] = hotel_data['destination']
     hotel[:name] = hotel_data['name']&.strip || nil

@@ -24,8 +24,8 @@ class AcmeSupplier < Supplier
     hotel = {}
 
     hotel[:id] = hotel_data['Id']
-    puts "Processing hotel id #{hotel[:id]}"
-    hotel[:destination_hotel] = hotel_data['DestinationId']
+    Logger.new(STDOUT).info "Processing hotel id #{hotel[:id]}"
+    hotel[:destination_id] = hotel_data['DestinationId']
     hotel[:name] = hotel_data['Name']&.strip || nil
     hotel[:description] = hotel_data['Description']&.strip || nil
 

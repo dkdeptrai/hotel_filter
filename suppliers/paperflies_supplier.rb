@@ -21,7 +21,7 @@ class PaperfliesSupplier < Supplier
     hotel = {}
 
     hotel[:id] = hotel_data['hotel_id']
-    puts "Processing hotel id: #{hotel[:id]}"
+    Logger.new(STDOUT).info "Processing hotel id #{hotel[:id]}"
 
     hotel[:destination_id] = hotel_data['destination_id']
     hotel[:name] = hotel_data['hotel_name']&.strip || nil
@@ -71,5 +71,4 @@ class PaperfliesSupplier < Supplier
       country: hotel_data.dig('location', 'country')&.strip || nil,
     }
   end
-
 end
