@@ -4,7 +4,7 @@
 - ruby 3.3.4
 
 ## Description
-This application fetch and merge data from 3 sources then allow filtering on `hotel_ids` and `destination_ids`: 
+This application fetches and merges data from 3 sources then allow filtering on `hotel_ids` and `destination_ids`: 
 <br>
 https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/acme
 https://5f2be0b4ffc88500167b85a0.mockapi.io/suppliers/patagonia
@@ -28,7 +28,7 @@ my_hotel_merger.rb hotel_id_4,hotel_id_5 none
 my_hotel_merger.rb none destination_id_3
 ```
 
-Results should looks like this:
+Results should look like this:
 ```
 [
   {
